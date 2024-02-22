@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package pt.tecnico.ttt;
+
+// The following option causes top-level messages, enums, and services to be defined at the package level, 
+// rather than inside an outer class named after the .proto file.
+option java_multiple_files = true;
+
+
+// current board operation
+
+message CurrentBoardRequest {
+ 	// No arguments for this request.
+}
+
+message CurrentBoardResponse {
+	string board = 1;
+}
+
+
+// play operation
+
+enum PlayResult {
+	UNKNOWN = 0;
+	OUT_OF_BOUNDS = 1;
+	SQUARE_TAKEN = 2;
+	WRONG_TURN = 3;
+	GAME_FINISHED = 4;
+	SUCCESS = 5;
+};
+
+// TODO request and response
+
+
+// check winner operation
+
+// TODO
+
+
+// service
+
+service TTT {
+	rpc CurrentBoard(CurrentBoardRequest) returns (CurrentBoardResponse);
+}

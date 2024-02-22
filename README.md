@@ -1,3 +1,1 @@
 # SD-Labs
-
-Labs

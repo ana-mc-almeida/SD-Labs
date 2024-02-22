@@ -3,7 +3,6 @@ package pt.tecnico.ttt.client;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import pt.tecnico.ttt.*;
-import pt.tecnico.ttt.PlayResult;
 
 import java.util.Scanner;
 
@@ -88,6 +87,7 @@ public class TTTClient {
 					debug("go = " + go);
 
 					if (go == 0) {
+						// FIX ME this should 
 						play_res = PlayResult.UNKNOWN;
 						continue;
 					}
@@ -98,15 +98,15 @@ public class TTTClient {
 					column = go % 3;
 					debug("row = " + row + ", column = " + column);
 
-					// TODO call play and set the proper play result
-					play_res = PlayResult.UNKNOWN;
+					PlayRequest request = PlayRequest.newBuilder().setRow(row).setColumn(column).setPlayer(player).build();
+					play_res = stub.play(request).getPlayResult();
 					if (play_res != PlayResult.SUCCESS) {
 						displayResult(play_res);
 					}
 
 				} while (play_res != PlayResult.SUCCESS);
 
-				// TODO call check winner and set the winning player.
+				winner = stub.checkWinner(CheckWinnerRequest.getDefaultInstance()).getResult();
 
 				/* Select next player. */
 				player = (player + 1) % 2;

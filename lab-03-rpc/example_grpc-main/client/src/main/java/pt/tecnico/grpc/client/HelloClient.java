@@ -43,6 +43,7 @@ public class HelloClient {
 		List<String> hobbies = new ArrayList<>();  // adds hobbies to the message
 		hobbies.add("football");
 		hobbies.add("basketball");
+		hobbies.add("voleyball");
 		HelloWorld.HelloRequest request = HelloWorld.HelloRequest.newBuilder().setName("friend").addAllHobbies(hobbies).build();
 
 		// Finally, make the call using the stub

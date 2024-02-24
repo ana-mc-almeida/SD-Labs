@@ -3,6 +3,8 @@ package pt.tecnico.ttt.server;
 import io.grpc.stub.StreamObserver;
 import pt.tecnico.ttt.*;
 
+import static io.grpc.Status.INVALID_ARGUMENT;
+
 public class TTTServiceImpl extends TTTGrpc.TTTImplBase {
 
 	/** Game implementation. */
@@ -26,18 +28,31 @@ public class TTTServiceImpl extends TTTGrpc.TTTImplBase {
 
 		PlayResult result = ttt.play(request.getRow(), request.getColumn(), request.getPlayer());
 
-		PlayResponse response = PlayResponse.newBuilder().setPlayResult(result).build();
-
-		responseObserver.onNext(response);
-		responseObserver.onCompleted();
+		if (result == PlayResult.OUT_OF_BOUNDS){
+			responseObserver.onError(INVALID_ARGUMENT.withDescription("Input has to be a valid position").asRuntimeException());
+		}
+		else{
+			// Send a single response through the stream.
+			PlayResponse response = PlayResponse.newBuilder().setPlayResult(result).build();
+			responseObserver.onNext(response);
+			// Notify the client that the operation has been completed.
+			responseObserver.onCompleted();
+		}
 	}
 
 	@Override
 	public void checkWinner(CheckWinnerRequest request, StreamObserver<CheckWinnerResponse> responseObserver){
 
-		int result = ttt.checkWinner();
+		CheckWinnerResponse response = CheckWinnerResponse.newBuilder().setResult(ttt.checkWinner()).build();
 
-		CheckWinnerResponse response = CheckWinnerResponse.newBuilder().setResult(result).build();
+		responseObserver.onNext(response);
+		responseObserver.onCompleted();
+	}
+
+	@Override 
+	public void waitForWinner(WaitForWinnerRequest request, StreamObserver<WaitForWinnerResponse> responseObserver){
+
+		WaitForWinnerResponse response = WaitForWinnerResponse.newBuilder().setResult(ttt.waitForWinner()).build();
 
 		responseObserver.onNext(response);
 		responseObserver.onCompleted();

@@ -50,10 +50,21 @@ message CheckWinnerResponse {
 	int32 result = 1;
 }
 
+// wait for winner operation
+
+message WaitForWinnerRequest {
+ 	// No arguments for this request.
+}
+
+message WaitForWinnerResponse {
+	int32 result = 1;
+}
+
 // service
 
 service TTT {
 	rpc CurrentBoard(CurrentBoardRequest) returns (CurrentBoardResponse);
 	rpc Play(PlayRequest) returns (PlayResponse);
 	rpc CheckWinner(CheckWinnerRequest) returns (CheckWinnerResponse);
+	rpc WaitForWinner(WaitForWinnerRequest) returns (WaitForWinnerResponse);
 }

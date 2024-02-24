@@ -2,6 +2,7 @@ package pt.tecnico.ttt.client;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.grpc.StatusRuntimeException;
 import pt.tecnico.ttt.*;
 
 import java.util.Scanner;
@@ -62,7 +63,8 @@ public class TTTClient {
 		int row = 0; /* Row index for a square */
 		int column = 0; /* Column index for a square */
 		int winner = -1; /* The winning player */
-		PlayResult play_res;
+		PlayResult play_res = null;
+		int isPlayer;
 
 		/*
 		 * Using try with scanner - ensures the resource is closed in the end, even if
@@ -70,50 +72,64 @@ public class TTTClient {
 		 */
 		try (Scanner scanner = new Scanner(System.in)) {
 
+			System.out.println("Type 1 to play or type 0 to waitForWinner");
+			isPlayer = scanner.nextInt();
+
 			/* The main game loop. The game continues for up to 9 turns, */
 			/* as long as there is no winner. */
-			do {
-				/* Get valid player square selection. */
+			if(isPlayer == 1){
 				do {
-					/* Print current board. */
-					debug("Call currentBoard");
-					System.out.println(stub.currentBoard(CurrentBoardRequest.getDefaultInstance()).getBoard());
-
-					System.out.printf(
-							"%nPlayer %d, please enter the number of the square "
-									+ "where you want to place your %c (or 0 to refresh the board): ",
-							player, (player == 1) ? 'X' : 'O');
-					go = scanner.nextInt();
-					debug("go = " + go);
-
-					if (go == 0) {
-						// FIX ME this should 
-						play_res = PlayResult.UNKNOWN;
-						continue;
-					}
-
-					/* Get row index of board. */
-					row = --go / 3;
-					/* Get column index of board. */
-					column = go % 3;
-					debug("row = " + row + ", column = " + column);
-
-					PlayRequest request = PlayRequest.newBuilder().setRow(row).setColumn(column).setPlayer(player).build();
-					play_res = stub.play(request).getPlayResult();
-					if (play_res != PlayResult.SUCCESS) {
-						displayResult(play_res);
-					}
-
-				} while (play_res != PlayResult.SUCCESS);
-
-				winner = stub.checkWinner(CheckWinnerRequest.getDefaultInstance()).getResult();
-
-				/* Select next player. */
-				player = (player + 1) % 2;
-				debug("player " + player);
-
-			} while (winner == -1);
-
+					/* Get valid player square selection. */
+					do {
+						/* Print current board. */
+						debug("Call currentBoard");
+						System.out.println(stub.currentBoard(CurrentBoardRequest.getDefaultInstance()).getBoard());
+	
+						System.out.printf(
+								"%nPlayer %d, please enter the number of the square "
+										+ "where you want to place your %c (or 0 to refresh the board): ",
+								player, (player == 1) ? 'X' : 'O');
+						go = scanner.nextInt();
+						debug("go = " + go);
+	
+						if (go == 0) {
+							// FIX ME this should 
+							play_res = PlayResult.UNKNOWN;
+							continue;
+						}
+	
+						/* Get row index of board. */
+						row = --go / 3;
+						/* Get column index of board. */
+						column = go % 3;
+						debug("row = " + row + ", column = " + column);
+	
+						try{
+							PlayRequest request = PlayRequest.newBuilder().setRow(row).setColumn(column).setPlayer(player).build();
+							play_res = stub.play(request).getPlayResult();
+							if (play_res != PlayResult.SUCCESS) {
+								displayResult(play_res);
+							}
+						}
+						catch (StatusRuntimeException e) {
+							System.out.println("Caught exception with description: " + 
+								e.getStatus().getDescription());
+						} 
+	
+					} while (play_res != PlayResult.SUCCESS);
+	
+					winner = stub.checkWinner(CheckWinnerRequest.getDefaultInstance()).getResult();
+	
+					/* Select next player. */
+					player = (player + 1) % 2;
+					debug("player " + player);
+	
+				} while (winner == -1);
+			} else {
+				System.out.println("Waiting for winner");
+				winner = stub.waitForWinner(WaitForWinnerRequest.getDefaultInstance()).getResult();
+			}
+			
 			/* Game is over so display the final board. */
 			debug("Call currentBoard");
 			System.out.println(stub.currentBoard(CurrentBoardRequest.getDefaultInstance()).getBoard());

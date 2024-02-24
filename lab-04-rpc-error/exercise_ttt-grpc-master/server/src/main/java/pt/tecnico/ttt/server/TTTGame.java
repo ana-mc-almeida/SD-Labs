@@ -36,12 +36,14 @@ public class TTTGame {
 			}
 			if (numPlays == 9) {
 				/* No more plays left */
+				this.notifyAll();
 				return PlayResult.GAME_FINISHED;
 			}
 	
 			board[row][column] = (player == 1) ? 'X' : 'O';  /* Insert player symbol */
 			nextPlayer = (nextPlayer + 1) % 2;
 			numPlays++;
+			if(checkWinner()!=-1) this.notifyAll();
 			return PlayResult.SUCCESS;
 		}
 	}
@@ -93,6 +95,24 @@ public class TTTGame {
 		
 		return result; 
 
+	}
+
+	public synchronized int waitForWinner() {
+		int winner = checkWinner();
+		if (winner == -1) {
+			
+			try {
+				this.wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+
+			// recalculate winner afther notifyAll()
+			return checkWinner();
+		
+		} else {
+			return winner;
+		}
 	}
 	
 	public void resetBoard() {

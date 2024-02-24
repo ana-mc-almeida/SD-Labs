@@ -1,0 +1,5 @@
+lab-05-grpc-multilanguage/.venv/*
+lab-05-grpc-multilanguage/example_grpc_multilanguage-master/.venv/*
+lab-05-grpc-multilanguage/example_grpc_multilanguage-master/contract/target/*
+lab-05-grpc-multilanguage/example_grpc_multilanguage-master/java_client/target/*
+lab-05-grpc-multilanguage/example_grpc_multilanguage-master/java_server/target/*

@@ -21,6 +21,9 @@ public class TTTGame {
 	
 
 	public PlayResult play(int row, int column, int player) {
+		if(row<0 || column < 0){
+			return PlayResult.INVALID_PLAY;
+		}
 		if (!(row >=0 && row <3 && column >= 0 && column < 3)) {
 			/* Outside board */
 			return PlayResult.OUT_OF_BOUNDS;

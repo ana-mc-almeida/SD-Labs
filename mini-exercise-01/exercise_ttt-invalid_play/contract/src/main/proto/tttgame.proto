@@ -27,6 +27,7 @@ enum PlayResult {
 	WRONG_TURN = 3;
 	GAME_FINISHED = 4;
 	SUCCESS = 5;
+	INVALID_PLAY = 6;
 };
 
 message PlayRequest{

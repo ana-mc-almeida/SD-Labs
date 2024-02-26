@@ -160,6 +160,9 @@ public class TTTClient {
 		case GAME_FINISHED:
 			System.out.print("Game has finished.");
 			break;
+		case INVALID_PLAY:
+			System.out.print("Invalid play.");
+			break;
 		default:
 			System.out.println("Unexpected result: " + play_res.toString());
 			break;

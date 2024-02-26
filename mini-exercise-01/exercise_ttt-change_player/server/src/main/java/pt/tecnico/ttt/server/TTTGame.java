@@ -122,5 +122,15 @@ public class TTTGame {
 			{'7', '8', '9'}
 		};
 	}
-	
+
+	public synchronized PlayResult changePlayer(int player){
+
+		if (player != nextPlayer)  {
+			/* Not players turn */
+			return PlayResult.WRONG_TURN;
+		}
+
+		nextPlayer = (nextPlayer + 1) % 2;
+		return PlayResult.SUCCESS;
+	}
 }

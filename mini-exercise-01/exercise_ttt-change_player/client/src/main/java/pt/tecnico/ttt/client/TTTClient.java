@@ -97,6 +97,20 @@ public class TTTClient {
 							play_res = PlayResult.UNKNOWN;
 							continue;
 						}
+
+						if(go==10){
+							try{
+								ChangePlayerRequest request = ChangePlayerRequest.newBuilder().setPlayer(player).build();
+								play_res = stub.changePlayer(request).getPlayResult();
+								if (play_res != PlayResult.SUCCESS) {
+									displayResult(play_res);
+								}
+							}
+							catch (StatusRuntimeException e) {
+								System.out.println("Caught exception with description: " + 
+									e.getStatus().getDescription());
+							} 
+						}
 	
 						/* Get row index of board. */
 						row = --go / 3;

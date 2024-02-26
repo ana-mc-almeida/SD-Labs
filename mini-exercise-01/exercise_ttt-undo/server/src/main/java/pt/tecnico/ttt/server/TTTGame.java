@@ -6,6 +6,9 @@ public class TTTGame {
 	private char board[][];
 	private int numPlays = 0;
 	private int nextPlayer = 0;
+	private int lastRow = 0;
+	private int lastCol = 0;
+	private char lastValue = '0';
 	
 	public TTTGame() {
 		this.resetBoard();
@@ -40,9 +43,12 @@ public class TTTGame {
 				return PlayResult.GAME_FINISHED;
 			}
 	
+			lastValue = board[row][column];
 			board[row][column] = (player == 1) ? 'X' : 'O';  /* Insert player symbol */
 			nextPlayer = (nextPlayer + 1) % 2;
 			numPlays++;
+			lastRow = row;
+			lastCol = column;
 			if(checkWinner()!=-1) this.notifyAll();
 			return PlayResult.SUCCESS;
 		}
@@ -113,6 +119,11 @@ public class TTTGame {
 		} else {
 			return winner;
 		}
+	}
+
+	public synchronized void undo(){
+		board[lastRow][lastCol] = lastValue;
+		nextPlayer = (nextPlayer + 1) % 2;
 	}
 	
 	public void resetBoard() {

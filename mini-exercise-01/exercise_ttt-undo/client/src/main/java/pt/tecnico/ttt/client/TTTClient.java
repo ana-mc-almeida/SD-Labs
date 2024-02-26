@@ -97,6 +97,11 @@ public class TTTClient {
 							play_res = PlayResult.UNKNOWN;
 							continue;
 						}
+						if(go == 10){
+							stub.undo(UndoRequest.getDefaultInstance());
+							play_res = PlayResult.SUCCESS;
+							continue;
+						}
 	
 						/* Get row index of board. */
 						row = --go / 3;

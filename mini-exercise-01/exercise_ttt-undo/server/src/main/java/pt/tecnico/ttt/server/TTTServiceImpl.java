@@ -58,4 +58,15 @@ public class TTTServiceImpl extends TTTGrpc.TTTImplBase {
 		responseObserver.onCompleted();
 	}
 
+	@Override 
+	public void undo(UndoRequest request, StreamObserver<UndoResponse> responseObserver){
+
+		ttt.undo();
+
+		UndoResponse response = UndoResponse.newBuilder().build();
+
+		responseObserver.onNext(response);
+		responseObserver.onCompleted();
+	}
+
 }

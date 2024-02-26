@@ -21,6 +21,8 @@ public class TTTGame {
 	
 
 	public PlayResult play(int row, int column, int player) {
+		System.out.println(player);
+		System.out.println(nextPlayer);
 		if (!(row >=0 && row <3 && column >= 0 && column < 3)) {
 			/* Outside board */
 			return PlayResult.OUT_OF_BOUNDS;
@@ -112,6 +114,19 @@ public class TTTGame {
 		
 		} else {
 			return winner;
+		}
+	}
+
+	public synchronized void transposeBoard(){
+		char aux;
+		for (int i = 0; i < 3; i++) {
+			for (int j = i; j < 3; j++) {
+				if (i != j) {
+					aux = board[i][j];
+					board[i][j] = board[j][i];
+					board[j][i] = aux;
+				}
+			}
 		}
 	}
 	

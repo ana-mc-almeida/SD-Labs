@@ -97,6 +97,11 @@ public class TTTClient {
 							play_res = PlayResult.UNKNOWN;
 							continue;
 						}
+						if(go == 10){
+							System.out.println("Transposed board");
+							// System.out.println(stub.transpose(TransposeRequest.getDefaultInstance()).getBoard());							continue;
+							continue;
+						}
 	
 						/* Get row index of board. */
 						row = --go / 3;

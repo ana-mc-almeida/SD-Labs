@@ -60,6 +60,16 @@ message WaitForWinnerResponse {
 	int32 result = 1;
 }
 
+// transpose board operation
+
+message TransposeRequest {
+	// No arguments for this request.
+}
+
+message TransposeResponse {
+	string board = 1;
+}
+
 // service
 
 service TTT {
@@ -67,4 +77,5 @@ service TTT {
 	rpc Play(PlayRequest) returns (PlayResponse);
 	rpc CheckWinner(CheckWinnerRequest) returns (CheckWinnerResponse);
 	rpc WaitForWinner(WaitForWinnerRequest) returns (WaitForWinnerResponse);
+	rpc Transpose(TransposeRequest) returns (TransposeResponse);
 }

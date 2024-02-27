@@ -110,6 +110,7 @@ public class TTTClient {
 								System.out.println("Caught exception with description: " + 
 									e.getStatus().getDescription());
 							} 
+							continue;
 						}
 	
 						/* Get row index of board. */

@@ -25,6 +25,8 @@ public class HelloClient {
 			return;
 		}
 
+		ResponseCollector collector = new ResponseCollector();
+
 		final String host = args[0];
 		final int port = Integer.parseInt(args[1]);
 		final String target = host + ":" + port;
@@ -53,8 +55,14 @@ public class HelloClient {
 		HelloWorld.HelloRequest request2 = HelloWorld.HelloRequest.newBuilder().setName("Bob").build();
 
 		// Finally, make the call using the stub
-		stub.greeting(request, new HelloObserver<HelloWorld.HelloResponse>());
-		stub2.greeting(request2, new HelloObserver<HelloWorld.HelloResponse>());
+		stub.greeting(request, new HelloObserver<HelloWorld.HelloResponse>(collector));
+		stub2.greeting(request2, new HelloObserver<HelloWorld.HelloResponse>(collector));
+
+		collector.waitUntilAllReceived(2);
+		System.out.println("Printing all the responses:");
+		for(String response : collector.getResponses()){
+			System.out.println(response);
+		}
 
 		System.out.println("Shutting down");
 

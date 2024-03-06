@@ -58,8 +58,8 @@ public class HelloClient {
 		stub.greeting(request, new HelloObserver<HelloWorld.HelloResponse>(collector));
 		stub2.greeting(request2, new HelloObserver<HelloWorld.HelloResponse>(collector));
 
-		collector.waitUntilAllReceived(2);
-		System.out.println("Printing all the responses:");
+		collector.waitUntilAllReceived(1);
+		System.out.println("Printing the first response:");
 		for(String response : collector.getResponses()){
 			System.out.println(response);
 		}

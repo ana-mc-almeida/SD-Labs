@@ -107,7 +107,7 @@ public class TTTGame {
 				e.printStackTrace();
 			}
 
-			// recalculate winner afther notifyAll()
+			// recalculate winner after notifyAll()
 			return checkWinner();
 		
 		} else {

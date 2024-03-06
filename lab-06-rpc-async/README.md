@@ -4,7 +4,7 @@ gRPC: chamadas assíncronas em _stubs_ não bloqueantes
 As soluções deste exercício podem ser divididas em 3 partes:
 - [Parte 1](https://github.com/ana-mc-almeida/SD-Labs/commit/a846df6a0ff98004e08cffb10436357617f3c941): Ligar-se a dois servidores e receber uma resposta de cada vez.
 - [Parte 2](https://github.com/ana-mc-almeida/SD-Labs/commit/b48f8af72f857b32f3b4b4ea2d252110a82fdbec): Esperar que as duas respostas sejam recebidas.
-- [Parte 3](): Esperar apenas pela primeira resposta
+- [Parte 3](https://github.com/ana-mc-almeida/SD-Labs/commit/17f63a8dc05e996a6b6dc095559896aa0975c8fb): Esperar apenas pela primeira resposta
 
 Objetivos
 ---------

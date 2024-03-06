@@ -36,16 +36,32 @@ public class HelloClient {
 		// It is up to the client to determine whether to block the call
 		// Here we create an async stub
 		HelloWorldServiceGrpc.HelloWorldServiceStub stub = HelloWorldServiceGrpc.newStub(channel);
-		HelloWorld.HelloRequest request = HelloWorld.HelloRequest.newBuilder().setName("friend").build();
+		HelloWorld.HelloRequest request = HelloWorld.HelloRequest.newBuilder().setName("Alice").build();
+
+		// SERVER 2 
+		final String host2 = host;
+		final int port2 = port + 1;
+		final String target2 = host2 + ":" + port2;
+
+		// Channel is the abstraction to connect to a service endpoint
+		// Let us use plaintext communication because we do not have certificates
+		final ManagedChannel channel2 = ManagedChannelBuilder.forTarget(target2).usePlaintext().build();
+
+		// It is up to the client to determine whether to block the call
+		// Here we create an async stub
+		HelloWorldServiceGrpc.HelloWorldServiceStub stub2 = HelloWorldServiceGrpc.newStub(channel2);
+		HelloWorld.HelloRequest request2 = HelloWorld.HelloRequest.newBuilder().setName("Bob").build();
 
 		// Finally, make the call using the stub
 		stub.greeting(request, new HelloObserver<HelloWorld.HelloResponse>());
+		stub2.greeting(request2, new HelloObserver<HelloWorld.HelloResponse>());
 
 		System.out.println("Shutting down");
 
 		// A Channel should be shutdown before stopping the process
 		// We can't use shutdownNow as it will cancel the asynchronous call
 		channel.shutdown();
+		channel2.shutdown();
 	}
 
 }

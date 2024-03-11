@@ -50,9 +50,7 @@ public class HelloClient {
 		request = HelloWorld.HelloRequest.newBuilder().setName("Bob").build();
 		stubs[1].greeting(request, new HelloObserver(c));
 
-		c.waitUntilAllReceived(numServers);
-		/* Alternative that only waits for the first response to arrive */
-		//c.waitUntilAllReceived(1); 
+		c.waitUntilStringReceived("Hello Alice");
 
 		System.out.println("Collected strings: " + c.getStrings());
 

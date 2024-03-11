@@ -37,7 +37,7 @@ public class HelloClient {
 			new HelloWorldServiceGrpc.HelloWorldServiceStub[numServers];
 
 		for (int i = 0; i < numServers; i++) {
-			String target = host + ":" + (port + i);
+			String target = host + ":" + (port);
 			channels[i] = ManagedChannelBuilder.forTarget(target).usePlaintext().build();
 			stubs[i] = HelloWorldServiceGrpc.newStub(channels[i]);
 		}
@@ -51,8 +51,6 @@ public class HelloClient {
 		stubs[1].greeting(request, new HelloObserver(c));
 
 		c.waitUntilAllReceived(numServers);
-		/* Alternative that only waits for the first response to arrive */
-		//c.waitUntilAllReceived(1); 
 
 		System.out.println("Collected strings: " + c.getStrings());
 

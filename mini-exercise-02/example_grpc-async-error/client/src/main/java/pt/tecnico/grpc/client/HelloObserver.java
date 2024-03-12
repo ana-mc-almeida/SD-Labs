@@ -14,6 +14,7 @@ public class HelloObserver implements StreamObserver<HelloResponse> {
     @Override
     public void onNext(HelloResponse r) {
         collector.addString(r.getGreeting());
+        this.onError(null);
         System.out.println("Received response: " + r);
     }
 

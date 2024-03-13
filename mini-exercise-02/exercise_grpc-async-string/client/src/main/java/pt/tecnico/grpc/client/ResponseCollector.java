@@ -30,7 +30,7 @@ public class ResponseCollector {
     synchronized public void waitUntilStringReceived(String str) throws InterruptedException {
         int size = collectedResponses.size();
 
-        while (size == 0 || collectedResponses.get(size - 1).equals(str)) {
+        while (size == 0 || !collectedResponses.get(size - 1).equals(str)) {
             wait();
             size = collectedResponses.size();
         }
